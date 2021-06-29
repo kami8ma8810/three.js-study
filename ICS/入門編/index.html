@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <title>ICS Three.js 入門編</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r127/three.min.js"></script>
     <script>
       // ページの読み込みを待つ
@@ -12,33 +13,35 @@
         const width = 960;
         const height = 540;
 
-        // レンダラーを作成
+        // 3D表示用のレンダラーを作成（HTMlと連携）
         const renderer = new THREE.WebGLRenderer({
           canvas: document.querySelector('#myCanvas'),
         });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(width, height);
 
-        // シーンを作成
+        // シーンを作成（3D空間のこと。3Dオブジェクトや光源の置き場）
         const scene = new THREE.Scene();
 
-        // カメラを作成
-        const camera = new THREE.PerspectiveCamera(45, width / height);
+        // カメラを作成（視点でもある）
+        const camera = new THREE.PerspectiveCamera(45, width / height); // （画角、アスペクト比）
         camera.position.set(0, 0, +1000);
 
         // 箱を作成
-        const geometry = new THREE.BoxGeometry(400, 400, 400);
-        const material = new THREE.MeshNormalMaterial();
+        const geometry = new THREE.BoxGeometry(400, 400, 400); // ジオメトリは頂点情報や面情報
+
+        const material = new THREE.MeshNormalMaterial(); //マテリアルは色や質感の情報
+
         const box = new THREE.Mesh(geometry, material);
-        scene.add(box);
+        scene.add(box); // boxとしてジオメトリとマテリアルを統合し、シーンに追加
 
         tick();
 
         // 毎フレーム時に実行されるループイベントです
+        //　※Three.jsでは自動的に画面が最新にならない。明示的に画面が更新されるように命令を書く必要がある。
         function tick() {
-          box.rotation.y += 0.01;
-          renderer.render(scene, camera); // レンダリング
-
+          box.rotation.y += 0.01; //アニメーション処理
+          renderer.render(scene, camera); // レンダリング（更新処理）
           requestAnimationFrame(tick);
         }
       }
